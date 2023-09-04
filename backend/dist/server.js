@@ -33,6 +33,7 @@ dotenv.config();
 app_1.default.get("/", (req, res) => {
     res.send("Hello Vegeta!");
 });
+//
 data_source_1.AppDataSource.initialize()
     .then(() => {
     console.log("Data Source has been initialized!");

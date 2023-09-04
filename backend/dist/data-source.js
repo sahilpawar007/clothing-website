@@ -29,11 +29,10 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 exports.AppDataSource = new typeorm_1.DataSource({
     type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
+    host: process.env.SQL_HOST,
+    username: process.env.SQL_USERNAME,
     password: process.env.SQL_PASS,
-    database: "clothing_website",
+    database: process.env.SQL_DATABASE,
     entities: [],
     synchronize: true,
     logging: true,
