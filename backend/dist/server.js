@@ -31,17 +31,18 @@ const dotenv = __importStar(require("dotenv"));
 const data_source_1 = require("./data-source");
 dotenv.config();
 app_1.default.get("/", (req, res) => {
-    res.send("Hello Vegeta!");
+    res.send("Welcome Vegeta");
 });
 //
-data_source_1.AppDataSource.initialize()
+data_source_1.myDataSource
+    .initialize()
     .then(() => {
-    console.log("Data Source has been initialized!");
+    console.log("Database Connected!!!!");
+    const server = app_1.default.listen(process.env.PORT, () => {
+        console.log(`Server is working on http://localhost:${process.env.PORT}`);
+    });
 })
     .catch((err) => {
     console.error("Error during Data Source initialization", err);
-});
-const server = app_1.default.listen(process.env.PORT, () => {
-    console.log(`Server is working on http://localhost:${process.env.PORT}`);
 });
 //# sourceMappingURL=server.js.map

@@ -23,17 +23,19 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppDataSource = void 0;
+exports.myDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
+// import { User } from "./Entity/User";
 dotenv.config();
-exports.AppDataSource = new typeorm_1.DataSource({
+exports.myDataSource = new typeorm_1.DataSource({
     type: "mysql",
     host: process.env.SQL_HOST,
+    port: 3306,
     username: process.env.SQL_USERNAME,
     password: process.env.SQL_PASS,
     database: process.env.SQL_DATABASE,
-    entities: [],
+    entities: [`${__dirname}/Entity/*`],
     synchronize: true,
     logging: true,
 });
