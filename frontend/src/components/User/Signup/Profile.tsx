@@ -1,36 +1,22 @@
-// import React from 'react'
-
+import { useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import Icons from "../../Layout/Header/Icons";
+import { useAppSelector } from "../../../redux/hooks";
+import { Link } from 'react-router-dom';
 
 const Profile = () => {
-    const navigate = useNavigate();
 
-    const updateEmail = () => {
-        navigate("/update-email");
-    };
+    const navigate = useNavigate()
 
-    const viewMyOrders = () => {
-        navigate("/myorders");
-    };
+    const {
+        // user,
+        isAuthenticated } = useAppSelector((state) => state.user);
 
-    const updateAddress = () => {
-        navigate("/update-address");
-    };
-    const updateProfile = () => {
-        navigate("/update-profile");
-    };
-
-    const updatePassword = () => {
-        navigate("/update-password");
-    };
-
-    const updatePhone = () => {
-        navigate("/update-phone");
-    };
-
-    const commonButtonStyles =
-        "text-gray-100 bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md mx-14 w-3/4 py-2 text-xl font-medium  ";
+    useEffect(() => {
+        if (isAuthenticated === false) {
+            navigate('/login')
+        }
+    }, [isAuthenticated, navigate])
 
     return (
         <div className=" bg-white my-10">
@@ -54,40 +40,30 @@ const Profile = () => {
                         </div>
                         <div className=" flex-wrap ml-5 border-l-2 border-gray-400 pl-6 w-3/4 space-y-4 ">
                             <p className="mt-1 text-xl font-medium text-gray-900">
-                                Sahil Pawar
+                                Sahil
                             </p>
                             <div className="flex space-x-3 items-center">
                                 <p className="mt-1 text-lg font-normal text-gray-900">
                                     sahilpawar0325@gmail.com
                                 </p>{" "}
-                                <Icons title="edit-email" onClick={updateEmail} span={false} strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                <Link to={"/email/update"}>
+                                    <Icons title="edit-email" span={false} strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </Link>
                             </div>
 
                             <div className="flex space-x-4">
-                                <button className="text-gray-100 bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex">
-                                    Logout
-                                </button>
-                                <button
-                                    onClick={updateProfile}
-                                    className="text-gray-100 bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex"
-                                >
-                                    Edit Profile
-                                </button>
+
+                                <Link to={"/logout"} className="text-gray-100 w-fit bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex"  >Logout</Link>
+                                <Link to={"/profile/update"} className="text-gray-100 w-fit bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex"  >Edit Profile</Link>
                             </div>
                         </div>
                     </div>
 
-                    <div className="item-center py-10 flex-wrap justify-center rounded-lg bg-white drop-shadow-lg space-y-6  ">
-                        <button className={`${commonButtonStyles} `} onClick={viewMyOrders}>
-                            View Orders
-                        </button>
+                    <div className="item-center w-full py-10 flex-wrap justify-center text-center rounded-lg bg-white drop-shadow-lg space-x-4 space-y-6  ">
 
-                        <button
-                            className={`${commonButtonStyles} `}
-                            onClick={updatePassword}
-                        >
-                            Update Password
-                        </button>
+                        <Link to={"/myorders"} className="text-gray-100 w-1/2 mx-auto bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium"  >View Orders</Link>
+                        <Link to={"/password/update"} className="text-gray-100 w-1/2 mx-auto bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium" >Update Password</Link>
+
                     </div>
                 </div>
 
@@ -102,12 +78,9 @@ const Profile = () => {
                                 7363 Cynthia Pass Toronto,
                             </p>
                             <p className="text-sm font-medium text-gray-600">ON N3Y 4H8</p>
-                            <button
-                                onClick={updateAddress}
-                                className="text-gray-100 bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex"
-                            >
-                                Update Address
-                            </button>
+
+                            <Link to={"/address/update"} className="text-gray-100 w-fit bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex">Edit Address</Link>
+
                         </div>
                     </div>
                     <div className="rounded-lg bg-white drop-shadow-md p-5 ">
@@ -118,12 +91,9 @@ const Profile = () => {
                             <p className="text-lg font-medium text-gray-600">
                                 +91 9999999999
                             </p>
-                            <button
-                                onClick={updatePhone}
-                                className="text-gray-100 bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex"
-                            >
-                                Update Phone Number
-                            </button>
+
+                            <Link to={"/phone/update"} className="text-gray-100 w-fit bg-black text-center border-transparent border-2 hover:border-2 hover:border-gray-500 hover:bg-gray-800 hover:text-white rounded-md px-3 py-2 text-xl font-medium flex" >Update Phone Number</Link>
+
                         </div>
                     </div>
                 </div>
@@ -133,8 +103,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-
-// <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-//   <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-// </svg>

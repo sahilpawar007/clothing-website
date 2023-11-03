@@ -29,9 +29,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
 const dotenv = __importStar(require("dotenv"));
 const data_source_1 = require("./data-source");
+const ip_1 = __importDefault(require("ip"));
 dotenv.config();
 app_1.default.get("/", (req, res) => {
-    res.send("Welcome Vegeta");
+    const ipAddress = ip_1.default.address();
+    res.send(ipAddress);
 });
 //
 data_source_1.myDataSource

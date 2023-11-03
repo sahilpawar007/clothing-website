@@ -7,6 +7,7 @@ import Search from "./Search";
 import Icons from "./Icons";
 import { useNavigate } from "react-router-dom";
 import DropdownMenuItem from "../../UI/Dropdown/DropdownMenuItem";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   const [isCartVisible, setIsCartVisible] = useState(false);
@@ -16,8 +17,8 @@ const Header = () => {
     setIsCartVisible(true);
   };
 
-  const showLogin = () => {
-    navigate("/login");
+  const showProfile = () => {
+    navigate("/profile");
   };
   return (
     <>
@@ -49,14 +50,12 @@ const Header = () => {
                   </div>
                 }
               </Dropdown>
-              <a
-                href="/contact"
+              <Link to={"/contact"}
                 className="text-gray-900 border-transparent border-2 hover:border-2 hover:border-gray-500 hover:text-gray-700 rounded-md px-3 py-2 text-xl font-medium flex"
               >
                 Contact
-              </a>
-              <a
-                href="#about"
+              </Link>
+              <a href={"#about"}
                 className="text-gray-900 border-transparent border-2 hover:border-2 hover:border-gray-500 hover:text-gray-700 rounded-md px-3 py-2 text-xl font-medium flex"
               >
                 About
@@ -70,7 +69,7 @@ const Header = () => {
               <Icons
                 span={false}
                 title="Login"
-                onClick={showLogin}
+                onClick={showProfile}
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"

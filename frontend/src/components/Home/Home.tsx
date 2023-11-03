@@ -6,7 +6,7 @@ import Promo from "./Promo";
 
 const Home = () => {
   return (
-    <div className="container w-full bg-white">
+    <div className="container w-full bg-gray-50">
       <CarouselSlide />
       <Product />
       <Promo />

@@ -12,32 +12,51 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProfile = exports.updatePassword = exports.getUserDetails = exports.userLogout = exports.userLogin = exports.userRegister = void 0;
+exports.resetPassword = exports.forgotPassword = exports.updateProfile = exports.updatePassword = exports.getUserDetails = exports.userLogout = exports.userLogin = exports.userRegister = void 0;
 const User_1 = require("../Entity/User");
 const data_source_1 = require("../data-source");
 const catchAsyncErrors_1 = require("../middlewares/catchAsyncErrors");
 const jwtToken_1 = __importDefault(require("../utils/jwtToken"));
 const errorHandler_1 = __importDefault(require("../utils/errorHandler"));
+const sendEmail_1 = __importDefault(require("../utils/sendEmail"));
+const crypto_1 = __importDefault(require("crypto"));
+const typeorm_1 = require("typeorm");
+const class_validator_1 = require("class-validator");
 const userRepository = data_source_1.myDataSource.getRepository(User_1.User);
 // REGISTER
 exports.userRegister = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email } = req.body;
+    const { email, phone, password } = req.body;
     const user = yield userRepository.findOne({
         where: {
             email: email,
         },
     });
+    const userPhone = yield userRepository.findOne({
+        where: {
+            phone: phone,
+        },
+    });
     if (user) {
-        return next(new errorHandler_1.default("User already exist", 401));
+        return next(new errorHandler_1.default("User already exist", 400));
+    }
+    if (userPhone) {
+        return next(new errorHandler_1.default("Phone Number already used", 400));
+    }
+    if (password.length < 8) {
+        return next(new errorHandler_1.default("Password must be greater than 8 characters", 400));
     }
     // Hash the password before saving the user
     const hashedPassword = yield (0, User_1.hashPassword)(req.body.password);
     let newUser = userRepository.create(Object.assign(Object.assign({}, req.body), { password: hashedPassword }));
+    const errors = yield (0, class_validator_1.validate)(newUser);
+    if (errors.length > 0) {
+        const validationErrors = errors
+            .map((error) => Object.values(error.constraints))
+            .join(", ");
+        return next(new errorHandler_1.default(validationErrors, 400));
+    }
     yield userRepository.save(newUser);
-    res.send({
-        status: 200,
-        data: newUser,
-    });
+    (0, jwtToken_1.default)(newUser, 200, res);
 }));
 // LOGIN
 exports.userLogin = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -58,7 +77,7 @@ exports.userLogin = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) =>
     if (!isMatch) {
         return next(new errorHandler_1.default("Password is invalid", 401));
     }
-    (0, jwtToken_1.default)(user.id, 200, res);
+    (0, jwtToken_1.default)(user, 200, res);
 }));
 // LOGOUT
 exports.userLogout = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -106,7 +125,6 @@ exports.updatePassword = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, nex
 }));
 // UPDATE USER PROFILE
 exports.updateProfile = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    // const email = req.body;
     var _d;
     const id = (_d = req.user) === null || _d === void 0 ? void 0 : _d.id;
     const user = yield userRepository.findOne({ where: { id: id } });
@@ -117,8 +135,6 @@ exports.updateProfile = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next
         const userEmails = yield userRepository.findOne({
             where: { email: req.body.email },
         });
-        // userEmails = cheacks if there is an user with the same email
-        // userEmails.id !== id = it checks if the email is same as the current email in db
         if (userEmails && userEmails.id !== id) {
             return next(new errorHandler_1.default("Email already exist", 404));
         }
@@ -132,5 +148,69 @@ exports.updateProfile = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next
     res.status(200).json({
         success: true,
     });
+}));
+// FORGOT PASSWORD
+exports.forgotPassword = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.body;
+    // const user = req.user?.id
+    const user = yield userRepository.findOne({ where: { email: email } });
+    if (!user) {
+        return next(new errorHandler_1.default("User not found", 404));
+    }
+    // Get reset password token
+    const resetToken = user.getResetPasswordToken();
+    yield userRepository.save(user);
+    const resetPasswordUrl = `http://localhost:4000/api/v1/password/reset/${resetToken}`;
+    const message = `Your password reset token click the limk to reset password : \n\n ${resetPasswordUrl} \n\n If you have not requested then fuck off`;
+    try {
+        yield (0, sendEmail_1.default)({
+            email: user.email,
+            subject: "RZLN Password Reset Link",
+            message,
+        });
+        res.status(200).json({
+            success: true,
+            message: `Email send to ${user.email} successfully`,
+        });
+    }
+    catch (error) {
+        (user.resetPasswordToken = undefined),
+            (user.resetPasswordExpire = undefined);
+        yield userRepository.save(user);
+        return next(new errorHandler_1.default("AAILA ERROR", 500));
+    }
+}));
+// RESET PASSWORD
+exports.resetPassword = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { password, confirmPassword } = req.body;
+    const resetPasswordToken = crypto_1.default
+        .createHash("sha256")
+        .update(req.params.token)
+        .digest("hex");
+    const user = yield userRepository.findOne({
+        where: {
+            resetPasswordToken,
+            resetPasswordExpire: (0, typeorm_1.MoreThan)(new Date()),
+        },
+    });
+    if (!user) {
+        return next(new errorHandler_1.default("Reset Password Token is invalid or has been expired", 400));
+    }
+    if (!password || !confirmPassword) {
+        return next(new errorHandler_1.default("Enter Password", 401));
+    }
+    if (password !== confirmPassword) {
+        return next(new errorHandler_1.default("Confirm Password doesn't match", 401));
+    }
+    const hashedPassword = yield (0, User_1.hashPassword)(password);
+    user.password;
+    user.password = hashedPassword;
+    if (user.resetPasswordExpire &&
+        user.resetPasswordExpire.getTime() < Date.now()) {
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        yield userRepository.save(user);
+    }
+    (0, jwtToken_1.default)(user.id, 200, res);
 }));
 //# sourceMappingURL=UserController.js.map

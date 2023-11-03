@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const Nav = () => {
     return (
@@ -9,9 +10,9 @@ const Nav = () => {
                 >
                     <li>
                         <div className="flex items-center">
-                            <a href="#" className="mr-2 text-sm font-medium text-gray-900">
+                            <Link to={"/"} className="mr-2 text-sm font-medium text-gray-900">
                                 Men
-                            </a>
+                            </Link>
                             <svg
                                 width="16"
                                 height="20"
@@ -26,9 +27,9 @@ const Nav = () => {
                     </li>
                     <li>
                         <div className="flex items-center">
-                            <a href="#" className="mr-2 text-sm font-medium text-gray-900">
+                            <Link to={"/"} className="mr-2 text-sm font-medium text-gray-900">
                                 Clothing
-                            </a>
+                            </Link>
                             <svg
                                 width="16"
                                 height="20"
@@ -43,13 +44,12 @@ const Nav = () => {
                     </li>
 
                     <li className="text-sm">
-                        <a
-                            href="#"
+                        <Link to="#"
                             aria-current="page"
                             className="font-medium text-gray-500 hover:text-gray-600"
                         >
                             Basic Tee 6-Pack
-                        </a>
+                        </Link>
                     </li>
                 </ol>
             </nav></>

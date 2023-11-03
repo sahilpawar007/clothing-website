@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const SingleProduct = () => {
   return (
     <div className="group relative bg-white drop-shadow-lg rounded-lg">
@@ -11,10 +13,10 @@ const SingleProduct = () => {
       <div className="my-4 flex ml-2 justify-between">
         <div>
           <h3 className="text-sm text-gray-700">
-            <a href="/product">
+            <Link to={"/product"}>
               <span aria-hidden="true" className="absolute inset-0"></span>
               Basic Tee
-            </a>
+            </Link>
           </h3>
           <p className="mt-1 text-lg font-medium text-gray-900">$48</p>
         </div>

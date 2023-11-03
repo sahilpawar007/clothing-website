@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./About.css";
 const About = () => {
   return (
@@ -35,18 +36,18 @@ const About = () => {
         </div>
         <div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">
           <div className="grid grid-cols-1 gap-x-8 gap-y-6 text-base font-semibold leading-7 text-white sm:grid-cols-2 md:flex lg:gap-x-10">
-            <a href="#">
+            <Link to={"/"}>
               Open roles <span aria-hidden="true">&rarr;</span>
-            </a>
-            <a href="#">
+            </Link>
+            <Link to={"/"}>
               Internship program <span aria-hidden="true">&rarr;</span>
-            </a>
-            <a href="#">
+            </Link>
+            <Link to={"/"}>
               Our values <span aria-hidden="true">&rarr;</span>
-            </a>
-            <a href="#">
+            </Link>
+            <Link to={"/"}>
               Meet our leadership <span aria-hidden="true">&rarr;</span>
-            </a>
+            </Link>
           </div>
           <dl className="mt-16 grid grid-cols-1 gap-8 sm:mt-20 sm:grid-cols-2 lg:grid-cols-4">
             <div className="flex flex-col-reverse">

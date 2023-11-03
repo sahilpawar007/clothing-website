@@ -26,7 +26,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.myDataSource = void 0;
 const typeorm_1 = require("typeorm");
 const dotenv = __importStar(require("dotenv"));
-// import { User } from "./Entity/User";
+const User_1 = require("./Entity/User");
+const Product_1 = require("./Entity/Product");
+const Reviews_1 = require("./Entity/Reviews");
+const Images_1 = require("./Entity/Images");
+const Order_1 = require("./Entity/Order");
+const OrderItems_1 = require("./Entity/OrderItems");
+const Shipping_1 = require("./Entity/Shipping");
+const Payment_1 = require("./Entity/Payment");
 dotenv.config();
 exports.myDataSource = new typeorm_1.DataSource({
     type: "mysql",
@@ -35,7 +42,16 @@ exports.myDataSource = new typeorm_1.DataSource({
     username: process.env.SQL_USERNAME,
     password: process.env.SQL_PASS,
     database: process.env.SQL_DATABASE,
-    entities: [`${__dirname}/Entity/*`],
+    entities: [
+        User_1.User,
+        Product_1.Product,
+        Reviews_1.Reviews,
+        Images_1.Images,
+        Order_1.Orders,
+        OrderItems_1.OrderItems,
+        Shipping_1.ShippingInfo,
+        Payment_1.PaymentInfo,
+    ],
     synchronize: true,
     logging: true,
 });

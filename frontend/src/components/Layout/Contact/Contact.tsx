@@ -3,6 +3,7 @@ import { Switch } from "@headlessui/react";
 import "./Contact.css";
 import Input from "../../User/UI/Input";
 import Button from "../../User/UI/Button";
+import { Link } from "react-router-dom";
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
@@ -25,7 +26,7 @@ const Contact = () => {
             Contact sales
           </h2>
           <p className="mt-2 text-lg leading-8 text-gray-600">
-            Aute magna irure deserunt veniam aliqua magna enim voluptate.
+            You are contacting RZLN
           </p>
         </div>
         <form
@@ -87,9 +88,9 @@ const Contact = () => {
               </div>
               <Switch.Label className="text-sm leading-6 text-gray-600">
                 By selecting this, you agree to our{" "}
-                <a href="#" className="font-semibold text-black">
+                <Link to={"/"} className="font-semibold text-black">
                   privacy&nbsp;policy
-                </a>
+                </Link>
                 .
               </Switch.Label>
             </Switch.Group>

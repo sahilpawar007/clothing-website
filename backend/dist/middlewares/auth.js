@@ -35,7 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.isAuthenticatedUser = void 0;
+exports.authorizeRole = exports.isAuthenticatedUser = void 0;
 const errorHandler_1 = __importDefault(require("../utils/errorHandler"));
 const catchAsyncErrors_1 = require("./catchAsyncErrors");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -43,19 +43,31 @@ const User_1 = require("../Entity/User");
 const data_source_1 = require("../data-source");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-// JWT Secret Key
-const JWT_SECRET = process.env.JWT_SECRET;
 exports.isAuthenticatedUser = (0, catchAsyncErrors_1.catchAsyncErrors)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const token = req.cookies.token;
+    const { token } = req.cookies;
+    // JWT Secret Key
+    const JWT_SECRET = process.env.JWT_SECRET;
     if (!token) {
         return next(new errorHandler_1.default("Please login to access this route", 401));
     }
     if (!JWT_SECRET) {
         throw new Error("JWT_SECRET must be defined!");
     }
-    const decodedData = jsonwebtoken_1.default.verify(token, JWT_SECRET);
     const userRepository = data_source_1.myDataSource.getRepository(User_1.User);
+    const decodedData = jsonwebtoken_1.default.verify(token, JWT_SECRET);
     req.user = yield userRepository.findOne({ where: { id: decodedData.id } });
     next();
 }));
+const authorizeRole = (...roles) => {
+    return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        if (!req.user) {
+            return next(new errorHandler_1.default("User data not available", 403));
+        }
+        if (!roles.includes(req.user.role)) {
+            return next(new errorHandler_1.default(`Role : ${req.user.role} is not allowed to access this resource`, 403));
+        }
+        next();
+    });
+};
+exports.authorizeRole = authorizeRole;
 //# sourceMappingURL=auth.js.map

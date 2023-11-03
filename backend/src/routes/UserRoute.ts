@@ -1,21 +1,24 @@
-import express, { Router } from "express";
+import express from "express";
 import {
+  forgotPassword,
   getUserDetails,
+  resetPassword,
   updatePassword,
   updateProfile,
-  // forgotPassword,
   userLogin,
   userLogout,
   userRegister,
 } from "../controllers/UserController";
 import { isAuthenticatedUser } from "../middlewares/auth";
-const router = express.Router();
+const userRouter = express.Router();
 
-router.post("/register", userRegister);
-router.post("/login", userLogin);
-router.get("/logout", userLogout);
-router.get("/profile", isAuthenticatedUser, getUserDetails);
-router.put("/password/update", isAuthenticatedUser, updatePassword);
-router.put("/profile/update", isAuthenticatedUser, updateProfile);
+userRouter.post("/register", userRegister);
+userRouter.post("/login", userLogin);
+userRouter.get("/logout", userLogout);
+userRouter.get("/profile", isAuthenticatedUser, getUserDetails);
+userRouter.put("/password/update", isAuthenticatedUser, updatePassword);
+userRouter.put("/profile/update", isAuthenticatedUser, updateProfile);
+userRouter.post("/password/forgot", forgotPassword);
+userRouter.put("/password/reset/:token", resetPassword);
 
-export default router;
+export default userRouter;

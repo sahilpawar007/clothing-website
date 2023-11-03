@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import { sortOptions } from '../../Product/FilterConstants';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon, FunnelIcon } from '@heroicons/react/20/solid';
+import { Link } from 'react-router-dom';
 
 interface SortProps {
     onOpen: () => void
@@ -41,8 +42,8 @@ const Sort: React.FC<SortProps> = ({ onOpen }) => {
                             {sortOptions.map((option) => (
                                 <Menu.Item key={option.name}>
                                     {({ active }) => (
-                                        <a
-                                            href={option.href}
+                                        <Link
+                                            to={option.href}
                                             className={classNames(
                                                 option.current
                                                     ? "font-medium text-gray-900"
@@ -52,7 +53,7 @@ const Sort: React.FC<SortProps> = ({ onOpen }) => {
                                             )}
                                         >
                                             {option.name}
-                                        </a>
+                                        </Link>
                                     )}
                                 </Menu.Item>
                             ))}

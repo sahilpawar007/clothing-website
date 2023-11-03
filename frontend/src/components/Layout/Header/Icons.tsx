@@ -3,7 +3,7 @@ import { MouseEventHandler } from "react";
 interface IconType {
   title: string;
   span: boolean;
-  onClick: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   strokeLinecap: "butt" | "round" | "square" | "inherit" | undefined;
   strokeLinejoin: "round" | "inherit" | "miter" | "bevel" | undefined;
   d: string;

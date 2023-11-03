@@ -9,6 +9,7 @@ import SingleProduct from "../Home/SingleProduct";
 import { filters, subCategories } from "./FilterConstants";
 import MobileView from "../UI/ProductPage/MobileView";
 import Sort from "../UI/ProductPage/Sort";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -45,7 +46,7 @@ const Products = () => {
                 >
                   {subCategories.map((category) => (
                     <li key={category.name}>
-                      <a href={category.href}>{category.name}</a>
+                      <Link to={category.href}>{category.name}</Link>
                     </li>
                   ))}
                 </ul>

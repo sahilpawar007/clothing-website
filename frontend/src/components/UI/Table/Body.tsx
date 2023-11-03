@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Row from "./Row";
 import TData from "./td";
 import THead from "./th";
@@ -11,18 +12,16 @@ const Body = () => {
         <TData td="Data" />
 
         <td className="px-6 py-4 flex justify-start">
-          <a
-            href="#"
+          <Link to="#"
             className="pr-5 font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit
-          </a>
-          <a
-            href="/order-details"
+          </Link>
+          <Link to="/order-details"
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             View Details
-          </a>
+          </Link>
         </td>
       </Row>
 
@@ -32,18 +31,16 @@ const Body = () => {
         <TData td="Data" />
 
         <td className="px-6 py-4 flex justify-start">
-          <a
-            href="#"
+          <Link to="#"
             className="pr-5 font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             Edit
-          </a>
-          <a
-            href="/order-details"
+          </Link>
+          <Link to="/order-details"
             className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
           >
             View Details
-          </a>
+          </Link>
         </td>
       </Row>
     </tbody>

@@ -13,6 +13,7 @@ import Button from "../User/UI/Button";
 import SizeEnable from "../UI/Products/SizeEnable";
 import SizeDisable from "../UI/Products/SizeDisable";
 import Loader from "../Layout/Loader/Loader";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
 
@@ -54,12 +55,11 @@ const ProductDetails = () => {
                 <div className="my-10">
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-medium text-gray-900">Size</h3>
-                    <a
-                      href="#"
+                    <Link to={"/"}
                       className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
                     >
                       Size guide
-                    </a>
+                    </Link>
                   </div>
                   <fieldset className="mt-4">
                     <legend className="sr-only">Choose a size</legend>

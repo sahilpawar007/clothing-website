@@ -3,6 +3,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { MinusIcon, PlusIcon } from "@heroicons/react/20/solid";
 import { Fragment } from "react";
 import { filters, subCategories } from "../../Product/FilterConstants";
+import { Link } from "react-router-dom";
 
 interface MobileViewProps {
     show: boolean
@@ -66,9 +67,9 @@ const MobileView: React.FC<MobileViewProps> = ({ show, onClose }) => {
                                     >
                                         {subCategories.map((category) => (
                                             <li key={category.name}>
-                                                <a href={category.href} className="block px-2 py-3">
+                                                <Link to={category.href} className="block px-2 py-3">
                                                     {category.name}
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>

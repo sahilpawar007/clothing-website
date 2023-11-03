@@ -1,4 +1,6 @@
-import { lazy, Suspense } from 'react';
+import {
+  lazy, Suspense,
+} from 'react';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
@@ -9,6 +11,7 @@ const ProductDetails = lazy(() => import("./components/Product/ProductDetails"))
 import Header from "./components/Layout/Header/Header";
 const Footer = lazy(() => import("./components/Layout/Footer/Footer"))
 import Loader from './components/Layout/Loader/Loader';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 const NotFound = lazy(() => import("./components/Layout/Not Found/NotFound"))
 const Products = lazy(() => import("./components/Product/Products"))
 const Checkout = lazy(() => import("./components/Order/Checkout"))
@@ -32,29 +35,33 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+
           <Route path="/product" element={<ProductDetails />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/checkout" element={<Checkout />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/order-details" element={<OrderDetails />} />
-          <Route path="/myorders" element={<MyOrders />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/update-address" element={<UpdateAddress />} />
-          <Route path="/update-email" element={<UpdateEmail />} />
-          <Route path="/update-password" element={<UpdatePassword />} />
-          <Route path="/update-phone" element={<UpdatePhone />} />
-          <Route path="/update-profile" element={<UpdateProfile />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/address/update" element={<UpdateAddress />} />
+            <Route path="/email/update" element={<UpdateEmail />} />
+            <Route path="/password/update" element={<UpdatePassword />} />
+            <Route path="/phone/update" element={<UpdatePhone />} />
+            <Route path="/profile/update" element={<UpdateProfile />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/order-details" element={<OrderDetails />} />
+            <Route path="/myorders" element={<MyOrders />} />
+          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/password/forgot" element={<ForgotPassword />} />
+          <Route path="/password/reset:token" element={<ResetPassword />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
 
       </Suspense>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 }
 

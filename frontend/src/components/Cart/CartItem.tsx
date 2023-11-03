@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 
 const CartItem = () => {
     return (
@@ -14,7 +15,7 @@ const CartItem = () => {
                 <div>
                     <div className="flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                            <a href="#">Throwback Hip Bag</a>
+                            <Link to={"/"}>Throwback Hip Bag</Link>
                         </h3>
                         <p className="ml-4">$90.00</p>
                     </div>

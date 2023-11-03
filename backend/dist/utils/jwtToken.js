@@ -31,37 +31,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-// Create Token and saving in cookie
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-// JWT Secret Key
-const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_EXPIRE = process.env.JWT_EXPIRE || "1d";
-const COOKIE_EXPIRE = Number(process.env.COOKIE_EXPIRE || 1) * 24 * 60 * 60 * 1000;
-if (!JWT_SECRET) {
-    throw new Error("JWT_SECRET must be defined!");
-}
-const sendToken = (userId, statusCode, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const tokenPayload = { id: userId };
-    const token = jsonwebtoken_1.default.sign(tokenPayload, JWT_SECRET, {
-        expiresIn: JWT_EXPIRE,
-    });
+const COOKIE_EXPIRE = Number(process.env.COOKIE_EXPIRE) * 24 * 60 * 60 * 1000;
+const sendToken = (user, statusCode, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const token = user.getJWTToken();
     // options for cookie
     const options = {
         expires: new Date(Date.now() + COOKIE_EXPIRE),
         httpOnly: true,
     };
-    res
-        .status(statusCode)
-        .cookie("token", token, options)
-        .json({
+    res.status(statusCode).cookie("token", token, options).json({
         success: true,
-        user: { id: userId },
+        user: user,
         token,
     });
 });

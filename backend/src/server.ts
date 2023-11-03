@@ -1,11 +1,13 @@
 import app from "./app";
 import * as dotenv from "dotenv";
 import { myDataSource } from "./data-source";
+import IP from "ip";
 
 dotenv.config();
 
 app.get("/", (req, res) => {
-  res.send("Welcome Vegeta");
+  const ipAddress = IP.address();
+  res.send(ipAddress);
 });
 //
 
