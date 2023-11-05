@@ -37,7 +37,7 @@ import {
   resetPasswordSuccess,
 } from "../reducer/forgotPasswordSlice";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+// const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const registerUser = (userData: any) => async (dispatch: any) => {
   try {
@@ -45,11 +45,7 @@ export const registerUser = (userData: any) => async (dispatch: any) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/register`,
-      userData,
-      config
-    );
+    const { data } = await axios.post(`/api/v1/register`, userData, config);
 
     dispatch(registerUserSuccess(data.user));
   } catch (error: any) {
@@ -65,7 +61,7 @@ export const loginUser =
       const config = { headers: { "Content-Type": "application/json" } };
 
       const { data } = await axios.post(
-        `${BACKEND_URL}/api/v1/login`,
+        `/api/v1/login`,
         { email, password },
         config
       );
@@ -78,7 +74,7 @@ export const loginUser =
 
 export const logoutUser = () => async (dispatch: any) => {
   try {
-    await axios.get(`${BACKEND_URL}/api/v1/logout`);
+    await axios.get(`/api/v1/logout`);
 
     dispatch(logoutSuccess());
   } catch (error: any) {
@@ -89,7 +85,7 @@ export const logoutUser = () => async (dispatch: any) => {
 export const loadUser = () => async (dispatch: any) => {
   try {
     dispatch(loadUserRequest());
-    const { data } = await axios.get(`${BACKEND_URL}/api/v1/profile`);
+    const { data } = await axios.get(`/api/v1/profile`);
 
     dispatch(loadUserSuccess(data.user));
   } catch (error: any) {
@@ -106,7 +102,7 @@ export const updateProfile = (userData: any) => async (dispatch: any) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/profile/update`,
+      `/api/v1/profile/update`,
       userData,
       config
     );
@@ -124,7 +120,7 @@ export const updatePassword = (userData: any) => async (dispatch: any) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/password/update`,
+      `/api/v1/password/update`,
       userData,
       config
     );
@@ -142,7 +138,7 @@ export const updateAddress = (userData: any) => async (dispatch: any) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/address/update`,
+      `/api/v1/address/update`,
       userData,
       config
     );
@@ -159,11 +155,7 @@ export const updatePhone = (userData: any) => async (dispatch: any) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/phone/update`,
-      userData,
-      config
-    );
+    const { data } = await axios.post(`/api/v1/phone/update`, userData, config);
 
     dispatch(updatePhoneSuccess(data.success));
   } catch (error: any) {
@@ -179,11 +171,7 @@ export const forgotPassword = (email: string) => async (dispatch: any) => {
 
     const config = { headers: { "Content-Type": "application/json" } };
 
-    const { data } = await axios.post(
-      `${BACKEND_URL}/api/v1/password/forgot`,
-      email,
-      config
-    );
+    const { data } = await axios.post(`/api/v1/password/forgot`, email, config);
 
     dispatch(forgotPasswordSuccess(data.message));
   } catch (error: any) {
@@ -199,7 +187,7 @@ export const resetPassword =
       const config = { headers: { "Content-Type": "application/json" } };
 
       const { data } = await axios.post(
-        `${BACKEND_URL}/api/v1/password/reset/${token}`,
+        `/api/v1/password/reset/${token}`,
         password,
         config
       );

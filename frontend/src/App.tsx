@@ -1,5 +1,5 @@
 import {
-  lazy, Suspense,
+  lazy, Suspense, useEffect
 } from 'react';
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -12,6 +12,7 @@ import Header from "./components/Layout/Header/Header";
 const Footer = lazy(() => import("./components/Layout/Footer/Footer"))
 import Loader from './components/Layout/Loader/Loader';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import store from './store';
 const NotFound = lazy(() => import("./components/Layout/Not Found/NotFound"))
 const Products = lazy(() => import("./components/Product/Products"))
 const Checkout = lazy(() => import("./components/Order/Checkout"))
@@ -26,9 +27,19 @@ const UpdatePhone = lazy(() => import("./components/User/Update/UpdatePhone"))
 const UpdateProfile = lazy(() => import("./components/User/Update/UpdateProfile"))
 const ForgotPassword = lazy(() => import("./components/User/Password/ForgotPassword"))
 const ResetPassword = lazy(() => import("./components/User/Password/ResetPassword"))
+// import {useAppDispatch} from './redux/hooks'
 
+import { loadUser } from './redux/actions/userAction';
+// import { useAppDispatch } from './redux/hooks';
 
 function App() {
+
+
+  useEffect(() => {
+    store.dispatch(loadUser())
+  }, [])
+
+
   return (
     <BrowserRouter>
       <Header />
